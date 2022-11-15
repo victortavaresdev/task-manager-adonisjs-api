@@ -1,25 +1,31 @@
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| This file is dedicated for defining HTTP routes. A single file is enough
-| for majority of projects, however you can define routes in different
-| files and just make sure to import them inside this file. For example
-|
-| Define routes in following two files
-| ├── start/routes/cart.ts
-| ├── start/routes/customer.ts
-|
-| and then import them inside `start/routes.ts` as follows
-|
-| import './routes/cart'
-| import './routes/customer'
-|
-*/
-
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+Route.post('api/v1/auth/login', 'AuthController.login').middleware('throttle:global')
+Route.post('api/v1/auth/logout', 'AuthController.logout')
+  .middleware('auth')
+  .middleware('throttle:global')
+Route.get('api/v1/profile', 'AuthController.getProfile')
+  .middleware('auth')
+  .middleware('throttle:global')
+
+Route.post('api/v1/users', 'UsersController.store').middleware('throttle:global')
+Route.get('api/v1/users/:id', 'UsersController.index')
+  .middleware('auth')
+  .middleware('throttle:global')
+Route.patch('api/v1/users/update/:id', 'UsersController.update')
+  .middleware('auth')
+  .middleware('throttle:global')
+Route.delete('api/v1/users/:id', 'UsersController.destroy')
+  .middleware('auth')
+  .middleware('throttle:global')
+
+Route.post('api/v1/tasks', 'TasksController.store').middleware('auth').middleware('throttle:global')
+Route.get('api/v1/tasks/:id', 'TasksController.index')
+  .middleware('auth')
+  .middleware('throttle:global')
+Route.patch('api/v1/tasks/update/:id', 'TasksController.update')
+  .middleware('auth')
+  .middleware('throttle:global')
+Route.delete('api/v1/tasks/:id', 'TasksController.destroy')
+  .middleware('auth')
+  .middleware('throttle:global')

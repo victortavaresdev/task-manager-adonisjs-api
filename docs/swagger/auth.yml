@@ -1,0 +1,54 @@
+/api/v1/auth/login:
+  post:
+    tags:
+      - Auth
+    security: []
+    summary: Authenticate user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: 'teste@gmail.com'
+                required: true
+              password:
+                type: string
+                example: 'teste123'
+                required: true
+    responses:
+      200:
+        description: OK
+      400:
+        description: Bad Request
+      422:
+        description: Unprocessable Entity
+
+/api/v1/auth/logout:
+  post:
+    tags:
+      - Auth
+    security:
+      - bearerAuth: []
+    summary: Revoke api token
+    responses:
+      200:
+        description: OK
+      401:
+        description: Unauthorized
+
+/api/v1/profile:
+  get:
+    tags:
+      - Auth
+    security:
+      - bearerAuth: []
+    summary: Get profile information from user
+    responses:
+      200:
+        description: OK
+      401:
+        description: Unauthorized
